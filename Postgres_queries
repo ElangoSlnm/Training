@@ -1,0 +1,267 @@
+SELECT student_id, mark, sub_code, year FROM (SELECT student_id, mark, sub_code, year, RANK() OVER (PARTITION BY sub_code, year ORDER 
+BY mark) AS m FROM marks WHERE exam_type = 3) AS s WHERE m=1;
+ student_id | mark | sub_code | year
+------------+------+----------+------
+          9 |   54 |        1 | 2016
+         15 |   45 |        2 | 2016
+         20 |   44 |        2 | 2017
+         14 |   41 |        3 | 2017
+         21 |   47 |        4 | 2016
+          2 |   32 |        4 | 2017
+         11 |   44 |        5 | 2016
+         20 |   58 |        6 | 2016
+         11 |   45 |       10 | 2017
+         12 |   58 |       14 | 2017
+(10 rows)
+
+SELECT student_name, subject_name, year, mark, rl FROM (SELECT p.name AS student_name, s.name as subject_name, m.year AS year, m.mark 
+AS mark, DENSE_RANK() OVER (PARTITION BY m.year, m.sub_code ORDER BY mark DESC) AS rl FROM marks m JOIN person p ON m.student_id = p.id JOIN subject s ON s.code = m.sub_code WHERE exam_type = 3) AS lt WHERE rl < 3;
+ student_name | subject_name | year | mark | rl
+--------------+--------------+------+------+----
+ Arun kumar   | java         | 2016 |   93 |  1
+ Suba Ranjana | java         | 2016 |   93 |  1
+ Sangavi      | java         | 2016 |   92 |  2
+ Vijay        | python       | 2016 |   97 |  1
+ Aravind      | python       | 2016 |   87 |  2
+ Velmurugan   | Maths        | 2016 |   91 |  1
+ Sana         | Maths        | 2016 |   88 |  2
+ Chitra       | Statics      | 2016 |   88 |  1
+ Velmurugan   | Statics      | 2016 |   87 |  2
+ Priya        | C++          | 2016 |   97 |  1
+ Sri ka       | C++          | 2016 |   87 |  2
+ Samruth      | python       | 2017 |   91 |  1
+ Priya        | python       | 2017 |   86 |  2
+ Vijay        | Android      | 2017 |   92 |  1
+ Mani         | Android      | 2017 |   87 |  2
+ Raj Kumar    | Android      | 2017 |   87 |  2
+ Kumar        | Maths        | 2017 |   93 |  1
+ Mani         | Maths        | 2017 |   93 |  1
+ Praveen      | Maths        | 2017 |   91 |  2
+ Chitra       | CAD          | 2017 |   89 |  1
+ Senthil      | CAD          | 2017 |   88 |  2
+ Velmurugan   | CAD          | 2017 |   88 |  2
+ Sana         | Physics      | 2017 |   98 |  1
+ Sana         | Physics      | 2017 |   86 |  2
+(24 rows)
+
+SELECT student_name, subject_name, year, mark, rl FROM (SELECT p.name AS student_name, s.name as subject_name, m.year AS year, m.mark 
+AS mark, RANK() OVER (PARTITION BY m.year, m.sub_code ORDER BY mark DESC) AS rl FROM marks m JOIN person p ON m.student_id = p.id JOIN subject s ON s.code = m.sub_code WHERE exam_type = 3) AS lt WHERE rl=1;
+ student_name | subject_name | year | mark | rl
+--------------+--------------+------+------+----
+ Arun kumar   | java         | 2016 |   93 |  1
+ Suba Ranjana | java         | 2016 |   93 |  1
+ Vijay        | python       | 2016 |   97 |  1
+ Velmurugan   | Maths        | 2016 |   91 |  1
+ Chitra       | Statics      | 2016 |   88 |  1
+ Priya        | C++          | 2016 |   97 |  1
+ Samruth      | python       | 2017 |   91 |  1
+ Vijay        | Android      | 2017 |   92 |  1
+ Kumar        | Maths        | 2017 |   93 |  1
+ Mani         | Maths        | 2017 |   93 |  1
+ Chitra       | CAD          | 2017 |   89 |  1
+ Sana         | Physics      | 2017 |   98 |  1
+(12 rows)
+
+SELECT student_name, subject_name, year, mark, rl FROM (SELECT p.name AS student_name, s.name as subject_name, m.year AS year, m.mark 
+AS mark, DENSE_RANK() OVER (PARTITION BY m.year, m.sub_code ORDER BY mark DESC) AS rl FROM marks m JOIN person p ON m.student_id = p.id JOIN subject s ON s.code = m.sub_code WHERE exam_type = 3) AS lt WHERE rl < 3;
+ student_name | subject_name | year | mark | rl
+--------------+--------------+------+------+----
+ Arun kumar   | java         | 2016 |   93 |  1
+ Suba Ranjana | java         | 2016 |   93 |  1
+ Sangavi      | java         | 2016 |   92 |  2
+ Vijay        | python       | 2016 |   97 |  1
+ Aravind      | python       | 2016 |   87 |  2
+ Velmurugan   | Maths        | 2016 |   91 |  1
+ Sana         | Maths        | 2016 |   88 |  2
+ Chitra       | Statics      | 2016 |   88 |  1
+ Velmurugan   | Statics      | 2016 |   87 |  2
+ Priya        | C++          | 2016 |   97 |  1
+ Sri ka       | C++          | 2016 |   87 |  2
+ Samruth      | python       | 2017 |   91 |  1
+ Priya        | python       | 2017 |   86 |  2
+ Vijay        | Android      | 2017 |   92 |  1
+ Mani         | Android      | 2017 |   87 |  2
+ Raj Kumar    | Android      | 2017 |   87 |  2
+ Kumar        | Maths        | 2017 |   93 |  1
+ Mani         | Maths        | 2017 |   93 |  1
+ Praveen      | Maths        | 2017 |   91 |  2
+ Chitra       | CAD          | 2017 |   89 |  1
+ Senthil      | CAD          | 2017 |   88 |  2
+ Velmurugan   | CAD          | 2017 |   88 |  2
+ Sana         | Physics      | 2017 |   98 |  1
+ Sana         | Physics      | 2017 |   86 |  2
+(24 rows)
+
+CREATE OR REPLACE FUNCTION getPersons()
+RETURNS SETOF person AS $$
+BEGIN
+RETURN query
+SELECT * FROM person LIMIT 20;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+
+college=# SELECT * FROM getPersons();
+ id |     name     |         email         | dept_id | age | gender | role
+----+--------------+-----------------------+---------+-----+--------+------
+  1 | Elango       | elango.slnm@gmail.com |       1 |  24 | m      |    1
+  2 | Rosy         | rosy@gmail.com        |       1 |  23 | f      |    1
+  3 | Praveen      | praveen@gmail.com     |       1 |  23 | m      |    1
+  4 | Aravind      | aravind@gmail.com     |       1 |  23 | m      |    1
+  5 | Vijay        | vijay@gmail.com       |       1 |  23 | m      |    1
+  6 | Sangavi      | sangavi@gmail.com     |       2 |  22 | m      |    1
+  7 | Kumar        | kumar@gmail.com       |       2 |  22 | m      |    1
+  8 | Mani         | mani@gmail.com        |       2 |  22 | m      |    1
+  9 | Raj Kumar    | raj@gmail.com         |       2 |  22 | m      |    1
+ 10 | Senthil      | senthil@gmail.com     |       3 |  22 | m      |    1
+ 11 | Sana         | sana@gmail.com        |       3 |  22 | f      |    1
+ 12 | Chitra       | chitra@gmail.com      |       3 |  22 | f      |    1
+ 13 | Surya        | surya@gmail.com       |       3 |  22 | m      |    1
+ 14 | Meganathan   | meg@gmail.com         |       4 |  22 | m      |    1
+ 15 | Sakthi       | sakthi@gmail.com      |       4 |  22 | m      |    1
+ 16 | Arun kumar   | arun@gmail.com        |       4 |  22 | m      |    1
+ 17 | Suba Ranjana | ranjana@gmail.com     |       4 |  21 | f      |    1
+ 18 | Samruth      | sam@gmail.com         |       5 |  23 | m      |    1
+ 19 | Sri ka       | srika@gmail.com       |       5 |  24 | f      |    1
+ 20 | Priya        | priya@gmail.com       |       5 |  23 | m      |    1
+(20 rows)
+
+CREATE OR REPLACE FUNCTION getInfo(vname varchar, vyear integer)
+RETURNS table(subject_name varchar(15), exam varchar(10), mark integer) AS $$
+BEGIN
+RETURN query
+SELECT s.name AS subject_name, e.type AS exam, m.mark FROM person p JOIN marks m ON p.id = m.student_id JOIN subject s ON m.sub_code = s.code JOIN exam e ON m.exam_type = e.id WHERE p.name = vname AND m.year = vyear LIMIT 10;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+
+college=# SELECT * FROM getInfo('Rosy', 2016);
+ subject_name |   exam   | mark 
+--------------+----------+------
+ java         | internal |   67 
+ python       | internal |   78 
+ java         | model    |   56 
+ python       | model    |   69 
+ java         | semester |   69 
+ python       | semester |   86
+ java         | internal |   67
+ python       | internal |   79
+ java         | model    |   77
+ python       | model    |   85
+(10 rows)
+
+
+CREATE OR REPLACE FUNCTION getInfo_to_json(vname varchar, vyear integer)
+RETURNS json AS $$
+DECLARE
+t_row json;
+BEGIN
+SELECT array_to_json(array_agg(row_to_json(t))) INTO t_row FROM (SELECT p.name AS student_name, s.name AS subject_name, e.type AS exam, m.mark FROM person p JOIN marks m ON p.id = m.student_id JOIN subject s ON m.sub_code = s.code JOIN exam e ON m.exam_type = e.id WHERE p.name = vname AND m.year = vyear LIMIT 10) t;
+RETURN t_row;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+
+SELECT * FROM getInfo_to_json('Elango', 2017);
+
+
+                                                                                          getinfo_to_json
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ [{"student_name":"Elango","subject_name":"Android","exam":"internal","mark":73},{"student_name":"Elango","subject_name":"Maths","exam":"internal","mark":75},{"student_name":"Elango","subject_name":"Android","exam":"model","mark":76},{"student_name":"Elango","subject_name":"Maths","exam":"model","mark":93},{"student_name":"Elango","subject_name":"Android","exam":"semester","mark":61},{"student_name":"Elango","subject_name":"Maths","exam":"semester","mark":79},{"student_name":"Elango","subject_name":"Android","exam":"internal","mark":89},{"student_name":"Elango","subject_name":"Maths","exam":"internal","mark":67},{"student_name":"Elango","subject_name":"Android","exam":"model","mark":67},{"student_name":"Elango","subject_name":"Maths","exam":"model","mark":85}]
+(1 row)
+
+
+CREATE TRIGGER name_changes
+  BEFORE UPDATE
+  ON person
+  FOR EACH ROW
+  EXECUTE PROCEDURE change_logs();
+ 
+ 
+
+college=# SELECT st.name AS staff_name, d.name AS department_name, COUNT(s.id) AS no_of_student FROM person st JOIN department d ON st.dept_id = d.id JOIN person s ON s.dept_id = d.id WHERE st.role = 2 AND s.role=1 GROUP BY st.name, d.name;
+  staff_name   | department_name | no_of_student 
+---------------+-----------------+---------------
+ Ashok Kuamr   | MSC             |             4 
+ Indhu Mathi   | CSE             |             4 
+ Muralaitharan | EEE             |             5 
+ Prakash       | EEE             |             5 
+ Raja          | MECH            |             5 
+ Ravi Kumar    | MCA             |             5 
+ Santhosh      | CSE             |             4 
+ Sapna         | MCA             |             5 
+ Sarath Kumar  | MSC             |             4 
+ Shana         | MECH            |             5 
+ Shanthi       | MSC             |             4 
+ Thiruna       | EEE             |             5 
+ Vengobal      | MECH            |             5 
+(13 rows)
+
+college=# SELECT st.name AS staff_name, d.name AS department_name, s.name AS student_name FROM person st JOIN department d ON st.dept_id = d.id 
+JOIN person s ON s.dept_id = d.id WHERE st.role = 2 AND s.role=1;
+  staff_name   | department_name | student_name 
+---------------+-----------------+--------------
+ Sapna         | MCA             | Elango       
+ Sapna         | MCA             | Praveen      
+ Sapna         | MCA             | Aravind      
+ Sapna         | MCA             | Vijay        
+ Sapna         | MCA             | Rosy
+ Ashok Kuamr   | MSC             | Sangavi      
+ Ashok Kuamr   | MSC             | Kumar        
+ Ashok Kuamr   | MSC             | Mani
+ Ashok Kuamr   | MSC             | Raj Kumar
+ Shana         | MECH            | Senthil
+ Shana         | MECH            | Sana
+ Shana         | MECH            | Chitra
+ Shana         | MECH            | Surya
+ Shana         | MECH            | Velmurugan
+ Santhosh      | CSE             | Meganathan
+ Santhosh      | CSE             | Sakthi
+ Santhosh      | CSE             | Arun kumar
+ Santhosh      | CSE             | Suba Ranjana
+ Prakash       | EEE             | Samruth
+ Prakash       | EEE             | Sri ka
+ Prakash       | EEE             | Priya
+ Prakash       | EEE             | Laxman
+ Prakash       | EEE             | Maruthi
+ Ravi Kumar    | MCA             | Elango
+ Ravi Kumar    | MCA             | Praveen
+ Ravi Kumar    | MCA             | Aravind
+ Ravi Kumar    | MCA             | Vijay
+ Ravi Kumar    | MCA             | Rosy
+ Shanthi       | MSC             | Sangavi
+ Shanthi       | MSC             | Kumar
+ Shanthi       | MSC             | Mani
+ Shanthi       | MSC             | Raj Kumar
+ Vengobal      | MECH            | Senthil
+ Vengobal      | MECH            | Sana
+ Vengobal      | MECH            | Chitra
+ Vengobal      | MECH            | Surya
+ Vengobal      | MECH            | Velmurugan
+ Indhu Mathi   | CSE             | Meganathan
+ Indhu Mathi   | CSE             | Sakthi
+ Indhu Mathi   | CSE             | Arun kumar
+ Indhu Mathi   | CSE             | Suba Ranjana
+ Raja          | MECH            | Senthil
+ Raja          | MECH            | Sana
+ Raja          | MECH            | Chitra
+ Raja          | MECH            | Surya
+ Raja          | MECH            | Velmurugan
+ Thiruna       | EEE             | Samruth
+ Thiruna       | EEE             | Sri ka
+ Thiruna       | EEE             | Priya
+ Thiruna       | EEE             | Laxman
+ Thiruna       | EEE             | Maruthi
+ Sarath Kumar  | MSC             | Sangavi
+ Sarath Kumar  | MSC             | Kumar
+ Sarath Kumar  | MSC             | Mani
+ Sarath Kumar  | MSC             | Raj Kumar
+ Muralaitharan | EEE             | Samruth
+ Muralaitharan | EEE             | Sri ka
+ Muralaitharan | EEE             | Priya
+ Muralaitharan | EEE             | Laxman
+ Muralaitharan | EEE             | Maruthi
+(60 rows)

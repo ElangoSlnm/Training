@@ -1,0 +1,86 @@
+college=# CREATE OR REPLACE FUNCTION getTableInformation(vtable VARCHAR)
+    RETURNS json AS $t_row$
+DECLARE
+    t_row json;
+BEGIN
+    SELECT array_to_json(array_agg(row_to_json(t))) INTO t_row FROM (SELECT con.conname AS name, con.contype AS type FROM pg_catalog.pg_constraint con INNER JOIN pg_catalog.pg_class rel ON rel.oid = con.conrelid INNER JOIN pg_catalog.pg_namespace nsp ON nsp.oid = connamespace WHERE nsp.nspname = 'public' AND rel.relname = vtable AND con.contype != 'f')t;
+    RETURN t_row;
+END;
+$t_row$ LANGUAGE plpgsql;
+CREATE FUNCTION
+college=#
+college=# SELECT * FROM getTableINformation('sample');
+                                              gettableinformation
+----------------------------------------------------------------------------------------------------------------
+ [{"name":"sample_pkey","type":"p"},{"name":"sample_name_key","type":"u"},{"name":"sample_pid_key","type":"u"}] 
+(1 row)
+
+
+college=# CREATE OR REPLACE FUNCTION create_table_index(vtable VARCHAR)
+    RETURNS text AS $result$
+DECLARE
+    result text;
+BEGIN
+    SELECT 'CREATE TABLE '||vtable||' ('||
+    array_to_string(
+        array_agg(column_name||' '||data_type||' '||nullable)
+    ,', ')
+    ||' );' 
+    INTO result 
+    FROM (SELECT 
+        pc.relname AS table_name, 
+        at.attname AS column_name, 
+        pg_catalog.format_type(at.atttypid, at.atttypmod) AS data_type, 
+        CASE WHEN at.attnotnull THEN 'NOT NULL' ELSE 'NULL' END AS nullable 
+        FROM 
+        pg_class pc JOIN pg_attribute at ON pc.oid = at.attrelid 
+        WHERE pc.relname = vtable AND at.attnum > 0
+    )t;
+    RETURN result;
+END;
+$result$ LANGUAGE plpgsql;
+CREATE FUNCTION
+college=#
+college=# SELECT * FROM create_table_index('sample');
+                                                          create_table_index
+--------------------------------------------------------------------------------------------------------------------------------------
+ CREATE TABLE sample (id integer NOT NULL, name character varying(10) NULL, sid integer NULL, pid integer NOT NULL, d integer NULL );
+(1 row)
+
+
+college=# CREATE OR REPLACE FUNCTION create_table(vtable VARCHAR)
+    RETURNS text AS $result$
+DECLARE
+    result text;
+BEGIN
+    SELECT 'CREATE TABLE '||vtable||' ('||
+    array_to_string(
+        array_agg(column_name||' '||data_type||' '||contype||nullable)
+    ,', ')
+    ||' );' 
+    INTO result 
+    FROM (SELECT 
+        pc.relname AS table_name, 
+        at.attname AS column_name, 
+        CASE WHEN pct.contype = 'p' THEN 'PRIMARY KEY ' WHEN pct.contype = 'u' THEN 'UNIQUE ' ELSE '' END AS contype, 
+        pg_catalog.format_type(at.atttypid, at.atttypmod) AS data_type, 
+        CASE WHEN at.attnotnull THEN 'NOT NULL' ELSE 'NULL' END AS nullable 
+        FROM 
+        pg_class pc JOIN pg_attribute at ON pc.oid = at.attrelid 
+        LEFT JOIN pg_index pi ON at.attrelid = pi.indrelid AND at.attnum::text = pi.indkey::text 
+        LEFT JOIN pg_constraint pct ON pi.indexrelid = pct.conindid 
+        WHERE pc.relname = vtable AND at.attnum > 0
+    )t;
+    RETURN result;
+END;
+$result$ LANGUAGE plpgsql;
+CREATE FUNCTION
+college=#
+college=# SELECT * FROM create_table('sample');
+                                                                          create_table
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ CREATE TABLE sample (id integer PRIMARY KEY NOT NULL, name character varying(10) UNIQUE NULL, sid integer NULL, pid integer UNIQUE NOT NULL, d 
+integer NULL );
+(1 row)
+

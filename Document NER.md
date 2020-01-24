@@ -1,11 +1,11 @@
 # Document NER
-### NER (Name Entity Regonition) is a process of extracting information from unstructured text into pre-defined categories.
+#### NER (Name Entity Regonition) is a process of extracting information from unstructured text into pre-defined categories.
 
 ## NER Platforms
-### spaCy is a open source python library for Natural Language Process.
+#### spaCy is a open source python library for Natural Language Process.
 
 ## spaCy Named Entities
-### spaCy can recognize various types of named entities in given document.
+#### spaCy can recognize various types of named entities in given document.
 
 ## Types:
 ##### PERSON, NORP, FAC, ORG, GPE, LOC, PRODUCT, EVENT, WORK_OF_ART, LAW, LANGUAGE, DATE, TIME, PERCENT, MONEY, QUANTITY, ORDINAL, CARDINAL .

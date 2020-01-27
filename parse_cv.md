@@ -10,6 +10,12 @@ import io
 import re
 import spacy
 
+# load pre-trained model
+nlp = spacy.load('en_core_web_sm')
+
+# initialize matcher with a vocab
+matcher = Matcher(nlp.vocab)
+
 def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as fh:
         # iterate over all pages of PDF document
@@ -45,17 +51,6 @@ def extract_text_from_pdf(pdf_path):
             converter.close()
             fake_file_handle.close()
 
-# calling above function and extracting text
-text = ''
-for page in extract_text_from_pdf(r'D:\NLP\NER\praveen.pdf'):
-    text += ' ' + page
-
-# load pre-trained model
-nlp = spacy.load('en_core_web_sm')
-
-# initialize matcher with a vocab
-matcher = Matcher(nlp.vocab)
-
 def extract_name(text):
     nlp_text = nlp(text)
     pattern = [{'POS': "PROPN"}, {'POS': "PROPN"}]
@@ -65,8 +60,6 @@ def extract_name(text):
     for match_id, start, end in matches:
         span = nlp_text[start:end]
         return span.text
-
-print("NAME: ",extract_name(text))
         
 def extract_mobile_number(text):
     phone = re.findall(re.compile(r'(?:(?:\+?([1-9]|[0-9][0-9]|[0-9][0-9][0-9])\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([0-9][1-9]|[0-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?'), text)
@@ -77,8 +70,6 @@ def extract_mobile_number(text):
             return '+' + number
         else:
             return number
-            
-print("MOBILE NUMBER: ",extract_mobile_number(text))
 
 def extract_email(email):
     email = re.findall(r'[\w\.-]+@[\w\.-]+', email)
@@ -88,7 +79,18 @@ def extract_email(email):
         except IndexError:
             return None
 
+
+# calling above function and extracting text
+text = ''
+for page in extract_text_from_pdf(r'D:\NLP\NER\praveen.pdf'):
+    text += ' ' + page
+
+
+
+print("NAME: ",extract_name(text))
+print("MOBILE NUMBER: ",extract_mobile_number(text))
 print("EMAIL: ",extract_email(text))
+
 ````
 
 #### Output:

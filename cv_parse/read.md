@@ -1,7 +1,7 @@
 ## Parse CV
 
 ```sh
-py cv_parse.py D:\NLP\NER\praveen.pdf
+py cv_parse.py D:\NLP\NER\anu.pdf
 ```
 
 ``` py

@@ -668,7 +668,7 @@ id,skill
 667,matlab
 668,clojure
 669,octave
-670,java
+670,javascript
 671,regression
 672,classification
 673,clustering
@@ -680,5 +680,5 @@ id,skill
 679,css3
 680,html5
 681,git
-682,javascript
+682,java
 683,vue.js

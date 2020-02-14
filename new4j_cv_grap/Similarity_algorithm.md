@@ -1,4 +1,4 @@
-``` sql
+``` cql
 CREATE CONSTRAINT ON (n:AnnotatedText) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT ON (n:Tag) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT ON (n:Sentence) ASSERT n.id IS UNIQUE;
@@ -83,4 +83,61 @@ YIELD item1, item2, count1, count2, intersection, similarity
 RETURN algo.asNode(item1).email AS from, algo.asNode(item2).email AS to, intersection, similarity
 ORDER BY similarity DESC
 
+```
+```cql
+LINUX
+CALL ga.nlp.config.setDefaultLanguage('en')
+
+CALL ga.nlp.processor.addPipeline({textProcessor: 'com.graphaware.nlp.processor.stanford.StanfordTextProcessor', name: 'customStopWords', processingSteps: {tokenize: true, ner: true, dependency: false}, stopWords: '+,result, all, during', 
+threadNumber: 40})
+
+
+CALL ga.nlp.processor.pipeline.default('customStopWords')
+
+
+// load resume data
+CALL ga.nlp.utils.walkdir("/home/aneeshk/Downloads/resumes/Office", ".pdf")
+YIELD filePath
+WITH filePath
+CALL ga.nlp.parser.pdf("file:///"+filePath) 
+YIELD number, paragraphs
+WITH filePath, apoc.text.join(paragraphs, ' ') AS paraText
+WITH filePath, COLLECT(paraText) AS paraList
+WITH filePath, apoc.text.join(paraList, ' ') AS textResult
+WITH filePath, textResult,
+apoc.text.regexGroups(
+    textResult,
+    '[A-Za-z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}'
+) AS email_list,
+apoc.text.regexGroups(
+    textResult,'\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*'
+) AS phno_list
+MERGE(resume:Resume{path:filePath ,email:coalesce(email_list[0][0],''), phno:coalesce(phno_list[0][0],''), text:textResult})
+
+CREATE CONSTRAINT ON (n:AnnotatedText) ASSERT n.id IS UNIQUE;
+CREATE CONSTRAINT ON (n:Tag) ASSERT n.id IS UNIQUE;
+CREATE CONSTRAINT ON (n:Sentence) ASSERT n.id IS UNIQUE;
+CREATE INDEX ON :Tag(value); 
+
+
+// load skills
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/cv_parse/skill.csv' AS result
+MERGE(skill:Skill{skill:result.skill})
+
+//load cities,states
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/new4j_cv_grap/Cities.csv' AS row
+MERGE(c:City{id:row.No,name:toLower(row.City)})
+MERGE(s:State{name:toLower(row.State)})
+MERGE(c)-[r:BELONGS_TO]->(s)
+
+//load college,university,state,district
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/new4j_cv_grap/Colleges.csv' AS row
+MERGE (u:University{name:coalesce(toLower(row.`University Name`),'')})
+MERGE (d:District{name:coalesce(toLower(row.`District Name`),'')})
+MERGE (c:College{name:coalesce(toLower(row.`College Name`),'')})
+MERGE (s:State{name:coalesce(toLower(row.`State Name`),'')})
+MERGE (d)-[:BELONGS_TO]->(s)
+MERGE (c)-[:IS_IN]-(d)
+MERGE (c)-[:AFFILIATED_TO]->(u)
 ```

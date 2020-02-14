@@ -12,7 +12,7 @@ id,name,short_name,type
 11,International Business Economics,BIBE,UG
 12,Bachelor of Business Administration,BBA,UG
 13,Bachelor of Management Studies,BMS,UG
-14,Bachelor of Administrative Studies,UG,
+14,Bachelor of Administrative Studies,,UG
 15,Bachelor of International Business Economics,BIBE,UG
 16,Bachelor of Commerce,"BCom,BComm",UG
 17,Bachelor of Fine Arts,BFA,UG
@@ -49,7 +49,7 @@ id,name,short_name,type
 48,Bachelor of General Studies,"BGS,BSGS",UG
 49,Bachelor of Science in Human Biology,BSc,UG
 50,Bachelor of Applied Studies,BAS,UG
-51,Bachelor of Liberal Studies,UG,
+51,Bachelor of Liberal Studies,,UG
 52,Bachelor of Professional Studies,BPS,UG
 53,Bachelor of Library Science,"B.L.S.,B.Lib.",UG
 54,Bachelor of Library and Information Science,B.L.I.S.,UG
@@ -85,12 +85,12 @@ id,name,short_name,type
 85,Master of Business,MBus,PG
 86,Master of Business Administration,"MBA,MBA",PG
 87,Master of Business Informatics,MBI,PG
-88,Master of City Planning,PG,
+88,Master of City Planning,,PG
 89,Master of Chemistry,MChem,PG
 90,Master of Commerce,"MCom,MComm",PG
 91,Master of Computational Finance,",Quantitative Finance",PG
 92,Master of Computer Applications,MCA,PG
-93,Master in Creative Technologies,PG,
+93,Master in Creative Technologies,,PG
 94,Master of Criminal Justice,MCJ,PG
 95,Master of Design,"MDes,MDes,MDesign",PG
 96,Master of Divinity,MDiv,PG
@@ -103,16 +103,16 @@ id,name,short_name,type
 103,Master of Finance,MFin,PG
 104,Master of Financial Mathematics,Master of Quantitative Finance,PG
 105,Master of Financial Engineering,Master of Quantitative Finance,PG
-106,Master of Financial Economics,PG,
+106,Master of Financial Economics,,PG
 107,Master of Fine Arts,"MFA,MFA",PG
 108,Master of Health Administration,MHA,PG
 109,Master of Health Science,MHS,PG
 110,Master of Humanities,MH,PG
 111,Master of Industrial and Labor Relations,MILR,PG
-112,Master of International Affairs,PG,
-113,Master of International Business,PG,
+112,Master of International Affairs,,PG
+113,Master of International Business,,PG
 114,Master of International Studies,MIS,PG
-115,Masters in International Economics,PG,
+115,Masters in International Economics,,PG
 116,Master of Information System Management,"abbreviated MISM,MSIM,MIS,similar",PG
 117,Master of IT,"abbreviated MSIT,MScIT,MScIT,MScIT,MSc IT",PG
 118,Master of Jurisprudence,"MJ,MJur",PG
@@ -124,30 +124,30 @@ id,name,short_name,type
 124,Master of Library and Information Science,MLIS,PG
 125,Master of Management,MM,PG
 126,Master of Mathematics,",MMath",PG
-127,Master of Mathematical Finance,PG,
-128,Master of Medical Science,PG,
+127,Master of Mathematical Finance,,PG
+128,Master of Medical Science,,PG
 129,Master of Music,"MM,MMus",PG
 130,Master of Occupational Therapy,OT,PG
 131,Master of Pharmacy,"MPharm,MPharm",PG
 132,Master of Philosophy,MPhil,PG
 133,Master of Physics,MPhys,PG
-134,Master of Physician Assistant Studies,PG,
-135,Master of Political Science,PG,
+134,Master of Physician Assistant Studies,,PG
+135,Master of Political Science,,PG
 136,Master of Professional Studies,"MPS,MPS",PG
 137,Master of Public Administration,MPA,PG
 138,Master of Public Affairs,MPAff,PG
 139,Master of Public Health,MPH,PG
-140,Master of Public Management,PG,
+140,Master of Public Management,,PG
 141,Master of Public Policy,MPP,PG
-142,Master of Quantitative Finance,PG,
+142,Master of Quantitative Finance,,PG
 143,Master of Rabbinic Studies,MRb,PG
-144,Master of Real Estate Development,PG,
-145,Master of Religious Education,PG,
+144,Master of Real Estate Development,,PG
+145,Master of Religious Education,,PG
 146,Master of Research - MSc,R,PG
 147,Master of Sacred Theology,STM,PG
 148,Master of Sacred Music,MSM,PG
 149,Master of Science,"MSc,MSc,MSci,MSi,ScM,MS,MSHS,MS,Mag,Mg,Mgr,SM,SM",PG
-150,Master of Science in Education,PG,
+150,Master of Science in Education,,PG
 151,Master of Science in Engineering,MSE,PG
 152,Master of Science in Finance,MFin,PG
 153,Master of Science in Human Resource Development,"HRD,MSHRD",PG
@@ -159,13 +159,13 @@ id,name,short_name,type
 159,Master of Science in Management,"MSc,MSM",PG
 160,Master of Science in Leadership,MSL,PG
 161,Master of Science in Supply Chain Management,"SCM,MSSCM",PG
-162,Master of Science in Taxation,PG,
+162,Master of Science in Taxation,,PG
 163,Master of Science in Teaching,MST,PG
 164,Master of Social Work,MSW,PG
 165,Master of Social Science,MSSc,PG
-166,Master of Surgery,"ChM,MS,MCh,MChir",PG
+166,Master of Surgery,"ChM,MS,as well as MCh and MChir",PG
 167,Master of Studies,"MSt,MSt",PG
 168,Master of Theology,"ThM,MTh",PG
 169,Master of Theological Studies,MTS,PG
-170,Master of Urban Planning,PG,
+170,Master of Urban Planning,,PG
 171,Master of Veterinary Science,"MVSC,MVSc",PG

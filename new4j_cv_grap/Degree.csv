@@ -1,0 +1,171 @@
+id,name,short_name,type
+1,Bachelor of Architecture,BArch,UG
+2,Bachelor of Arts,"BA,AB,BS,BSc,SB,ScB",UG
+3,Bachelor of Applied Arts,BAA,UG
+4,Bachelor of Applied Arts and Science,BAAS,UG
+5,Bachelor of Applied Science in Information Technology,BAppSc,UG
+6,Bachelor of Design,"BDes,SDes in Indonesia",UG
+7,Bachelor of Engineering,"BEng,BE,BSE,BESc,BSEng,BASc,BTech,BSc",UG
+8,Bachelor of Science in Business,BSBA,UG
+9,Bachelor of Engineering Technology,BSET,UG
+10,Bachelor of Technology,"B.Tech.,B.Tech.",UG
+11,International Business Economics,BIBE,UG
+12,Bachelor of Business Administration,BBA,UG
+13,Bachelor of Management Studies,BMS,UG
+14,Bachelor of Administrative Studies,,UG
+15,Bachelor of International Business Economics,BIBE,UG
+16,Bachelor of Commerce,"BCom,BComm",UG
+17,Bachelor of Fine Arts,BFA,UG
+18,Bachelor of Business,"BBus,BBus",UG
+19,Bachelor of Management and Organizational Studies,BMOS,UG
+20,Bachelor of Business Science,BBusSc,UG
+21,Bachelor of Accountancy,"B.Acy.,B.Acc.,B. Accty",UG
+22,Bachelor of Comptrolling,"B.Acc.Sci.,B.Compt.",UG
+23,Bachelor of Economics,"BEc,BEconSc; sometimes BA",UG
+24,Bachelor of Arts in Organizational Management,BAOM,UG
+25,Bachelor of Computer Science,BCompSc,UG
+26,Bachelor of Computing,BComp,UG
+27,Bachelor of Science in Information Technology,BSc IT,UG
+28,Bachelor of Computer Applications,BCA,UG
+29,Bachelor of Business Information Systems,BBIS,UG
+30,Intercalated Bachelor of Science,BSc,UG
+31,Bachelor of Medical Science,BMedSci,UG
+32,Bachelor of Medical Biology,BMedBiol,UG
+33,Bachelor of Science in Public Health,BSPH,UG
+34,Bachelor of Science in Nursing,"BN,BNSc,BScN,BSN,BNurs,BSN,BHSc.",UG
+35,Bachelor of Health Science,BHS & BHSc,UG
+36,Bachelor of Kinesiology,"BKin,BSc",UG
+37,Bachelor of Arts for Teaching,BAT,UG
+38,Bachelor of Aviation,BAvn,UG
+39,Bachelor of Divinity,"BD,BDiv",UG
+40,Bachelor of Theology,"B.Th.; Th.B.,BTheol",UG
+41,Bachelor of Religious Education,BRE,UG
+42,Bachelor of Religious Studies,BRS,UG
+43,Bachelor of Film and Television,BF&TV,UG
+44,Bachelor of Integrated studies,BIS,UG
+45,Bachelor of Journalism,"BJ,BAJ,BSJ,BJourn",UG
+46,Bachelor of Landscape Architecture,BLArch,UG
+47,Bachelor of Liberal Arts,B.L.A.; occasionally A.L.B.,UG
+48,Bachelor of General Studies,"BGS,BSGS",UG
+49,Bachelor of Science in Human Biology,BSc,UG
+50,Bachelor of Applied Studies,BAS,UG
+51,Bachelor of Liberal Studies,,UG
+52,Bachelor of Professional Studies,BPS,UG
+53,Bachelor of Library Science,"B.L.S.,B.Lib.",UG
+54,Bachelor of Library and Information Science,B.L.I.S.,UG
+55,Bachelor of Music,"BM,BMus",UG
+56,Bachelor of Art in Music,BA in Music,UG
+57,Bachelor of Music Education,BME,UG
+58,Bachelor of Philosophy,"BPhil,PhB",UG
+59,Bachelor of Arts in Psychology,BAPSY,UG
+60,Bachelor of Mortuary Science,BMS,UG
+61,Bachelor of Science in Psychology,BSc,UG
+62,Bachelor of Science in Education,"BSE,BS in Ed",UG
+63,Bachelor of Science and/with education degree,BScEd,UG
+64,Bachelor of Science in Forestry,"B.S.F.,B.Sc.F.",UG
+65,Bachelor of Applied Science,BASc,UG
+66,Bachelor of Science in Law,BSL,UG
+67,Bachelor of Social Science,BSocSc,UG
+68,Bachelor of Arts in Social Work,"BSW,BASW",UG
+69,Bachelor of Talmudic Law,BTL,UG
+70,Bachelor of Technology,B.Tech,UG
+71,Bachelor of Tourism Studies,BTS,UG
+72,Bachelor of Mathematics,BMath,UG
+73,Bachelor of Mathematical Sciences,BMathSc,UG
+74,Bachelor of Public Affairs and Policy Management,BPAPM,UG
+75,Bachelor of Urban and Regional Planning,BURP and BPlan,UG
+77,Master of Accountancy,"MAcc,MAc,MAcy",PG
+78,Master of Advanced Study,MAS,PG
+79,Master of Economics,MEcon,PG
+80,Master of Architecture,MArch,PG
+81,Master of Applied Science,"MASc,MAppSc,MApplSc,MASc and MAS",PG
+82,Master of Arts,"MA,MA,AM,AM",PG
+83,Master of Arts in Teaching,MAT,PG
+84,Master of Arts in Liberal Studies,"MA,ALM,MLA,MLS,MALS",PG
+85,Master of Business,MBus,PG
+86,Master of Business Administration,"MBA,MBA",PG
+87,Master of Business Informatics,MBI,PG
+88,Master of City Planning,,PG
+89,Master of Chemistry,MChem,PG
+90,Master of Commerce,"MCom,MComm",PG
+91,Master of Computational Finance,",Quantitative Finance",PG
+92,Master of Computer Applications,MCA,PG
+93,Master in Creative Technologies,,PG
+94,Master of Criminal Justice,MCJ,PG
+95,Master of Design,"MDes,MDes,MDesign",PG
+96,Master of Divinity,MDiv,PG
+97,Master of Economics,MEcon,PG
+98,Master of Education,"MEd,MEd,EdM,MAEd,MSEd,MSE,MEdL",PG
+99,Master of Enterprise,MEnt,PG
+100,Master of Engineering,"MEng,ME,MEng",PG
+101,Master of Engineering Management,MEM,PG
+102,Master of European Law,LLM Eur,PG
+103,Master of Finance,MFin,PG
+104,Master of Financial Mathematics,Master of Quantitative Finance,PG
+105,Master of Financial Engineering,Master of Quantitative Finance,PG
+106,Master of Financial Economics,,PG
+107,Master of Fine Arts,"MFA,MFA",PG
+108,Master of Health Administration,MHA,PG
+109,Master of Health Science,MHS,PG
+110,Master of Humanities,MH,PG
+111,Master of Industrial and Labor Relations,MILR,PG
+112,Master of International Affairs,,PG
+113,Master of International Business,,PG
+114,Master of International Studies,MIS,PG
+115,Masters in International Economics,,PG
+116,Master of Information System Management,"abbreviated MISM,MSIM,MIS,similar",PG
+117,Master of IT,"abbreviated MSIT,MScIT,MScIT,MScIT,MSc IT",PG
+118,Master of Jurisprudence,"MJ,MJur",PG
+119,Master of Laws,"LLM,LLM",PG
+120,Master of Studies in Law,MSL,PG
+121,Master of Landscape Architecture,MArch,PG
+122,Master of Letters,MLitt,PG
+123,Master of Liberal Arts,"MA,ALM,MLA,MLS,MALS",PG
+124,Master of Library and Information Science,MLIS,PG
+125,Master of Management,MM,PG
+126,Master of Mathematics,",MMath",PG
+127,Master of Mathematical Finance,,PG
+128,Master of Medical Science,,PG
+129,Master of Music,"MM,MMus",PG
+130,Master of Occupational Therapy,OT,PG
+131,Master of Pharmacy,"MPharm,MPharm",PG
+132,Master of Philosophy,MPhil,PG
+133,Master of Physics,MPhys,PG
+134,Master of Physician Assistant Studies,,PG
+135,Master of Political Science,,PG
+136,Master of Professional Studies,"MPS,MPS",PG
+137,Master of Public Administration,MPA,PG
+138,Master of Public Affairs,MPAff,PG
+139,Master of Public Health,MPH,PG
+140,Master of Public Management,,PG
+141,Master of Public Policy,MPP,PG
+142,Master of Quantitative Finance,,PG
+143,Master of Rabbinic Studies,MRb,PG
+144,Master of Real Estate Development,,PG
+145,Master of Religious Education,,PG
+146,Master of Research - MSc,R,PG
+147,Master of Sacred Theology,STM,PG
+148,Master of Sacred Music,MSM,PG
+149,Master of Science,"MSc,MSc,MSci,MSi,ScM,MS,MSHS,MS,Mag,Mg,Mgr,SM,SM",PG
+150,Master of Science in Education,,PG
+151,Master of Science in Engineering,MSE,PG
+152,Master of Science in Finance,MFin,PG
+153,Master of Science in Human Resource Development,"HRD,MSHRD",PG
+154,Master of Science in Information Systems Management,MSMIS,PG
+155,Master of Science in Information Systems,MSIS,PG
+156,Master of Science in Information Technology,"MSIT,MScIT,MScIT,MScIT,MSc IT",PG
+157,Master of Science in Nursing,MSN,PG
+158,Master of Science in Project Management,MSPM,PG
+159,Master of Science in Management,"MSc,MSM",PG
+160,Master of Science in Leadership,MSL,PG
+161,Master of Science in Supply Chain Management,"SCM,MSSCM",PG
+162,Master of Science in Taxation,,PG
+163,Master of Science in Teaching,MST,PG
+164,Master of Social Work,MSW,PG
+165,Master of Social Science,MSSc,PG
+166,Master of Surgery,"ChM,MS,as well as MCh and MChir",PG
+167,Master of Studies,"MSt,MSt",PG
+168,Master of Theology,"ThM,MTh",PG
+169,Master of Theological Studies,MTS,PG
+170,Master of Urban Planning,,PG
+171,Master of Veterinary Science,"MVSC,MVSc",PG

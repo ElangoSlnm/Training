@@ -6,10 +6,10 @@ CREATE INDEX ON :Tag(value);
 
 CALL ga.nlp.config.setDefaultLanguage('en')
 
-CALL ga.nlp.processor.addPipeline({textProcessor: 'com.graphaware.nlp.processor.stanford.StanfordTextProcessor', name: 'customStopWords', processingSteps: {tokenize: true, ner: true, dependency: false}, stopWords: '+,result, all, during', 
+CALL ga.nlp.processor.addPipeline({textProcessor: 'com.graphaware.nlp.processor.stanford.StanfordTextProcessor', name: 'NER', processingSteps: {tokenize: true, ner: true, dependency: false}, stopWords: '+,result, all, during', 
 threadNumber: 20})
 
-CALL ga.nlp.processor.pipeline.default('customStopWords')
+CALL ga.nlp.processor.pipeline.default('NER')
 
 
 CALL ga.nlp.utils.walkdir("C:/Users/Elango/Documents/resume/", ".pdf")
@@ -42,7 +42,7 @@ MERGE(skill:Skill{skill:result.skill})
 MATCH(e:Email)-[:HAS_TEXT]->(text)-[:HAS_ANNOTATED_TEXT]->(a:AnnotatedText)-[:CONTAINS_SENTENCE]->(s:Sentence)-[:HAS_TAG]->(t:Tag)
 WITH e, text, a, s, t
 MATCH(sk:Skill)
-WHERE toLower(sk.skill) = toLower(t.value)
+WHERE sk.skill) = t.value)
 MERGE(e)-[:HAS_SKILL]->(sk)
 
 
@@ -88,15 +88,23 @@ ORDER BY similarity DESC
 LINUX
 CALL ga.nlp.config.setDefaultLanguage('en')
 
-CALL ga.nlp.processor.addPipeline({textProcessor: 'com.graphaware.nlp.processor.stanford.StanfordTextProcessor', name: 'customStopWords', processingSteps: {tokenize: true, ner: true, dependency: false}, stopWords: '+,result, all, during', 
-threadNumber: 40})
+CALL ga.nlp.processor.addPipeline({textProcessor: 'com.graphaware.nlp.processor.stanford.StanfordTextProcessor', name: 'NER', processingSteps: {tokenize: true, ner: true, dependency: false}, stopWords: '+,result, all, during', 
+threadNumber: 60});
+
+Sentence Segmentation
+Tokenization
+StopWords Removal
+Stemming
+Part Of Speech Tagging
+Named Entity Recognition
 
 
-CALL ga.nlp.processor.pipeline.default('customStopWords')
+
+CALL ga.nlp.processor.pipeline.default('NER')
 
 
 // load resume data
-CALL ga.nlp.utils.walkdir("/home/aneeshk/Downloads/resumes/Office", ".pdf")
+CALL ga.nlp.utils.walkdir("/home/aneeshk/Downloads/kyc", ".pdf")
 YIELD filePath
 WITH filePath
 CALL ga.nlp.parser.pdf("file:///"+filePath) 
@@ -114,6 +122,25 @@ apoc.text.regexGroups(
 ) AS phno_list
 MERGE(resume:Resume{path:filePath ,email:coalesce(email_list[0][0],''), phno:coalesce(phno_list[0][0],''), text:textResult})
 
+CALL ga.nlp.utils.walkdir("/home/aneeshk/Downloads/kyc", ".docx")
+YIELD filePath
+WITH filePath
+CALL ga.nlp.parser.word("file:///"+filePath) 
+YIELD number, paragraphs
+WITH filePath, apoc.text.join(paragraphs, ' ') AS paraText
+WITH filePath, COLLECT(paraText) AS paraList
+WITH filePath, apoc.text.join(paraList, ' ') AS textResult
+WITH filePath, textResult,
+apoc.text.regexGroups(
+    textResult,
+    '[A-Za-z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}'
+) AS email_list,
+apoc.text.regexGroups(
+    textResult,'\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*'
+) AS phno_list
+MERGE(resume:Resume{path:filePath ,email:coalesce(email_list[0][0],''), phno:coalesce(phno_list[0][0],''), text:textResult})
+
+
 CREATE CONSTRAINT ON (n:AnnotatedText) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT ON (n:Tag) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT ON (n:Sentence) ASSERT n.id IS UNIQUE;
@@ -121,23 +148,38 @@ CREATE INDEX ON :Tag(value);
 
 
 // load skills
+CREATE INDEX ON :Skill(skill)
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/cv_parse/skill.csv' AS result
 MERGE(skill:Skill{skill:result.skill})
 
 //load cities,states
+
+CREATE INDEX ON :City(name)
+CREATE INDEX ON :State(name)
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/new4j_cv_grap/Cities.csv' AS row
-MERGE(c:City{id:row.No,name:toLower(row.City)})
-MERGE(s:State{name:toLower(row.State)})
+MERGE(c:City{id:row.No,name:row.City})
+MERGE(s:State{name:row.State})
 MERGE(c)-[r:BELONGS_TO]->(s)
 
 //load college,university,state,district
-USING PERIODIC COMMIT
+CREATE INDEX ON :State(name)
+CREATE INDEX ON :College(name)
+CREATE INDEX ON :District(name)
+CREATE INDEX ON :University(name)
+
+USING PERIODIC COMMIT 1000
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/new4j_cv_grap/Colleges.csv' AS row
-MERGE (u:University{name:coalesce(toLower(row.`University Name`),'')})
-MERGE (d:District{name:coalesce(toLower(row.`District Name`),'')})
-MERGE (c:College{name:coalesce(toLower(row.`College Name`),'')})
-MERGE (s:State{name:coalesce(toLower(row.`State Name`),'')})
+MERGE (u:University{name:coalesce(row.`University Name`,'')})
+MERGE (d:District{name:coalesce(row.`District Name`,'')})
+MERGE (c:College{name:coalesce(row.`College Name`,'')})
+MERGE (s:State{name:coalesce(row.`State Name`,'')})
 MERGE (d)-[:BELONGS_TO]->(s)
 MERGE (c)-[:IS_IN]-(d)
 MERGE (c)-[:AFFILIATED_TO]->(u)
+
+CREATE INDEX ON :Company(name);
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ElangoSlnm/Training/master/new4j_cv_grap/Companies.csv' AS result
+MERGE(company:Company{name:result.name})
+
+
 ```

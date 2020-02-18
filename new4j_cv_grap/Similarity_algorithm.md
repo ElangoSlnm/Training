@@ -1,3 +1,4 @@
+```CQL
 //Graphaware procedures
 CALL dbms.procedures() YIELD name, signature, description
 WHERE name =~ 'ga.nlp.*'

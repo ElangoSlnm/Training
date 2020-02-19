@@ -190,13 +190,56 @@ MERGE(r)-[:RELATED_TO]->(c)
 // Finding similarity
 //Limit on the number of scores per node. The K largest results are returned.
 
+Match(k)-[r:JCARD_SIMILAR]->(k1)
+DETACH DELETE r
+
+Match(k)-[r:IS_SIMILAR_TO]->(k1)
+DETACH DELETE r
+
+Match(r:Resume)
+REMOVE r.with_sim_res_cluster
+RETURN 1
+
+//Stream node sim
+
+CALL algo.nodeSimilarity.stream('Resume|Skill|City|District|Company', 'RELATED_TO', {
+  direction: 'OUTGOING',
+  topK: 10
+
+})
+YIELD node1, node2, similarity
+with algo.asNode(node1).email AS e1, algo.asNode(node2).email AS e2, similarity
+where e1 <> e2 and e1 <> "" and e2 <> ""
+RETURN e1,e2,similarity
+ORDER BY similarity DESCENDING, e1, e2
+
+
 CALL algo.nodeSimilarity('Resume|Skill|City|District|Company', 'RELATED_TO', {
   direction: 'OUTGOING',
   write:true,
-  topK: 1000,
+  topK: 10,
   similarityCutoff:0.6,
-  concurrency:6,
+  concurrency:4,
   writeRelationshipType:"IS_SIMILAR_TO"
 
 })
 YIELD nodesCompared, relationships, write, writeRelationshipType, writeProperty, p1, p50, p99, p100;
+
+//Load cluster
+CALL algo.beta.louvain('Resume', 'IS_SIMILAR_TO', {
+ graph: 'huge',
+ direction: 'BOTH',
+ writeProperty: 'with_sim_res_cluster',
+ write: true,
+ includeIntermediateCommunities: true,
+ levels: 50,
+ weightProperty: 'score'
+}) YIELD loadMillis, computeMillis, writeMillis, nodes, communityCount, modularity, modularities, p1, p25, p50, p75, p99, p100;
+
+
+MATCH (r:Resume)-[:RELATED_TO]->(k)
+WITH {item:id(r), categories: collect(id(k))} as userData
+WITH collect(userData) as data
+CALL algo.similarity.jaccard(data, {topK: 1, similarityCutoff: 0.1, write:true,writeRelationshipType:"JCARD_SIMILAR"})
+YIELD nodes, similarityPairs, write, writeRelationshipType, writeProperty, min, max, mean, stdDev, p25, p50, p75, p90, p95, p99, p999, p100
+RETURN nodes, similarityPairs, write, writeRelationshipType, writeProperty, min, max, mean, p95

@@ -1,0 +1,63 @@
+ALTER SYSTEM set wal_level to logical;
+SHOW wal_level;
+
+CREATE DATABASE tpch;
+
+-- /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main restart
+
+\c tpch
+CREATE SCHEMA tpch;
+CREATE USER debezium WITH SUPERUSER PASSWORD 'debezium';
+GRANT ALL PRIVILEGES ON DATABASE "tpch" to debezium;
+GRANT ALL PRIVILEGES ON SCHEMA "tpch" to debezium;
+
+
+CREATE TABLE tpch.sample (id serial primary key, name varchar unique not null, age int not null);
+
+
+INSERT INTO tpch.sample (name, age) VALUES ('elango', 25);
+INSERT INTO tpch.sample (name, age) VALUES ('manoj', 24);
+INSERT INTO tpch.sample (name, age) VALUES ('senthil', 26);
+INSERT INTO tpch.sample (name, age) VALUES ('santhosh', 23);
+INSERT INTO tpch.sample (name, age) VALUES ('surya', 25);
+
+
+CREATE SOURCE sample
+FROM KAFKA BROKER 'localhost:9092' TOPIC 'tpch.tpch.sample'
+FORMAT AVRO USING CONFLUENT SCHEMA REGISTRY 'http://localhost:8081' ENVELOPE DEBEZIUM;
+
+
+-- Sample schema
+CREATE SOURCE sample
+FROM KAFKA BROKER 'localhost:9092' TOPIC 'tpch.tpch.sample'
+FORMAT AVRO USING SCHEMA '{
+  "connect.name": "tpch.tpch.sample.Key",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+        "name":"name",
+        "type":"string"
+    },
+    {
+        "name":"age",
+        "type":"int"
+    }
+  ],
+  "name": "Key",
+  "namespace": "tpch.tpch.sample",
+  "type": "record"
+}' ENVELOPE DEBEZIUM;
+
+
+-- psql -h 3.6.94.240 -d employee -U admin -c "copy emp.employee (email, phno) from STDIN with delimiter as ','"  < /home/elango/project/materialize/employee.csv
+
+CREATE MATERIALIZED VIEW count AS SELECT COUNT(*) FROM sample;
+
+SELECT * FROM count;
+
+CREATE MATERIALIZED VIEW sample_view AS SELECT * FROM sample;
+
+SELECT * FROM sample_view;

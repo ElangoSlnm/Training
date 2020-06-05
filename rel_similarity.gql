@@ -1,0 +1,32 @@
+upsert{
+  query{
+    var(func: eq(id, 40))
+    @filter(type("Pat")){
+      norm as math(1.0)
+      p1N as count(HAS_UNIGRAM)
+      p1U as HAS_UNIGRAM{
+        ~HAS_UNIGRAM {
+          p1c as math(p1N/norm)
+          p2c as count(HAS_UNIGRAM)
+        }
+      }
+    }
+    var(func: uid(p2c))
+    @filter(NOT uid(p1N)){
+      pIntersect as count(HAS_UNIGRAM)
+      @filter(uid(p1U))
+      score as math(pIntersect / 
+      (p1c + p2c - pIntersect ))
+    }
+    q(func: uid(score))
+    @filter(gt(val(score), 0.1)){
+      p2Node as uid
+      sc:val(score)
+    }
+  }
+  mutation {
+    set {
+      uid(p1N) <IS_SIMILAR> uid(p2Node) .
+    }
+  }
+}

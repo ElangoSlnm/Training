@@ -1,0 +1,151 @@
+# Jaccard Similarity
+query test($id:int=2){
+  var(func: eq(id, $id)){
+    norm as math(1.0) 
+    # Unigram count of Pat 1
+    p1_num_uni as count(HAS_UNIGRAM)
+    p1_uni as HAS_UNIGRAM {
+      ~HAS_UNIGRAM {
+      	# normalize the Pat 1 count to Pats for multiple paths
+      	num_uniN as math(p1_num_uni/norm)
+        # Count of Pat1 intersection Pat2
+        p2_num_uni_not_p1 as count(HAS_UNIGRAM) @filter(uid(p1_uni))
+      }
+    }
+  }
+  var(func: uid(num_uniN)){
+    # Unigram count of Pat 2
+    p2_num_uni as count(HAS_UNIGRAM)
+    # Jaccard Similarity
+    # Count of Pat1 intersection Pat2 / (count of Pat 1 + count of Pat 2 - Count of Pat1 intersection Pat2)
+    similar as math(p2_num_uni_not_p1 / (num_uniN + p2_num_uni - p2_num_uni_not_p1))
+  }
+  result(func: uid(similar),orderdesc:val(similar)) @filter(NOT uid(p1_num_uni) AND gt(val(similar), 0.2)){
+    uid
+    id
+    patnum
+    percentage:val(similar)
+  }
+}
+
+# Overlap Similarity
+query test($id:int=34){
+  var(func: eq(id, $id)){
+    norm as math(1.0) 
+    # Unigram count of Pat 1
+    p1_num_uni as count(HAS_UNIGRAM)
+    p1_uni as HAS_UNIGRAM {
+      ~HAS_UNIGRAM {
+        # normalize the Pat 1 count to Pats for multiple paths
+      	num_uniN as math(p1_num_uni/norm)
+      	# Count of Pat1 intersection Pat2
+        p2_num_uni_not_p1 as count(HAS_UNIGRAM) @filter(uid(p1_uni))
+      }
+    }
+  }
+  var(func: uid(num_uniN)){
+    # Unigram count of Pat 2
+    p2_num_uni as count(HAS_UNIGRAM)
+    # Overlap Similarity 
+    # Pat1 intersection Pat2 / min(count of Pat 1, count of Pat 2)
+    similar as math(p2_num_uni_not_p1 / min(num_uniN , p2_num_uni))
+  }
+  result(func: uid(similar),orderdesc:val(similar)) @filter(NOT uid(p1_num_uni) AND gt(val(similar), 0.2)){
+    uid
+    patnum
+    percentage:val(similar)
+  }
+}
+
+# Jaccard Similarity
+query test($p1id:int, $p2id:int){
+  var(func: eq(id, $p1id)) 
+  @filter(type("Pat")){
+    p1Id as id
+    norm as math(1.0)
+    p1_uni_num as count(HAS_UNIGRAM)
+    p1_uni as HAS_UNIGRAM {
+      ~HAS_UNIGRAM
+      @filter(eq(id, $p2id)){
+      	p1_uni_count as math(p1_uni_num / norm)
+      	p2_count as count(HAS_UNIGRAM)
+    	}
+    }
+  }
+  var(func: uid(p2_count)) 
+  @filter(NOT uid(p1_uni_num)){
+    p2Id as id
+    p1_intersect as count(HAS_UNIGRAM)
+    @filter(uid(p1_uni))
+    score as math(p1_intersect / 
+      (p1_uni_count + p2_count - p1_intersect))
+  }
+  patent1(func: uid(p1Id)){
+    patnum1:patnum
+    HAS_UNIGRAM {
+      id:id
+    }
+    total:val(p1_uni_num)
+  }
+  patent2(func: uid(p2Id)){
+    patnum2:patnum
+    HAS_UNIGRAM {
+      id:id
+    }
+    total:val(p2_count)
+  }
+  similar(func: uid(score)){
+    similarity:val(score)
+    HAS_UNIGRAM
+    @filter(uid(p1_uni)){
+      id
+    }
+    total:val(p1_intersect)
+  }
+}
+
+# Overlap Similarity
+query test($p1id:int, $p2id:int){
+  var(func: eq(id, $p1id)) 
+  @filter(type("Pat")){
+    p1Id as id
+    norm as math(1.0)
+    p1_uni_num as count(HAS_UNIGRAM)
+    p1_uni as HAS_UNIGRAM {
+      ~HAS_UNIGRAM
+      @filter(eq(id, $p2id)){
+      	p1_uni_count as math(p1_uni_num / norm)
+      	p2_count as count(HAS_UNIGRAM)
+    	}
+    }
+  }
+  var(func: uid(p2_count)) 
+  @filter(NOT uid(p1_uni_num)){
+    p2Id as id
+    p1_intersect as count(HAS_UNIGRAM)
+    @filter(uid(p1_uni))
+    score as math(p1_intersect / min(p1_uni_count, p2_count))
+  }
+  patent1(func: uid(p1Id)){
+    patnum1:patnum
+    HAS_UNIGRAM {
+      id:id
+    }
+    total:val(p1_uni_num)
+  }
+  patent2(func: uid(p2Id)){
+    patnum2:patnum
+    HAS_UNIGRAM {
+      id:id
+    }
+    total:val(p2_count)
+  }
+  similar(func: uid(score)){
+    similarity:val(score)
+    HAS_UNIGRAM
+    @filter(uid(p1_uni)){
+      id
+    }
+    total:val(p1_intersect)
+  }
+}
